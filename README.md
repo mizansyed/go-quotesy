@@ -2,3 +2,10 @@ go-quotesy
 ==========
 
 A quote management system
+
+- Quotes (title, language, source, quote group, main)
+- Quote Group (Description, comments about quote)
+- Tags
+- Language
+
+Should allow user to store quotes and in associated languages, translations, transliterations even (depends on how user wishes to set up languages)
