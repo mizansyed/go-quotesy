@@ -9,3 +9,6 @@ A quote management system
 - Language
 
 Should allow user to store quotes and in associated languages, translations, transliterations even (depends on how user wishes to set up languages)
+
+---------------
+Written in golang using the revel framework and mongodb
