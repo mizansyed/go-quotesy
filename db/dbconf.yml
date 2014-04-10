@@ -1,0 +1,8 @@
+test:
+    driver: sqlite3
+    open: quotesy.sqlite3
+
+development:
+    driver: sqlite3
+    open: quotesy.sqlite3
+
