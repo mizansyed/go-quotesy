@@ -1,0 +1,54 @@
+{{set . "title" "Language"}}
+{{template "header.html" .}}
+
+<header>
+  <div class="container">
+    <div class="row">
+        <h2>Add a Language</h2>       
+    </div>
+  </div>
+</header>
+<p></p>
+<div class="container">
+  <div class="row">
+    <div class="span6">
+      {{template "flash.html" .}}
+    </div>
+  </div>
+</div>
+
+
+
+<div class="container well">
+	<form role="form" action="/language/AddLanguage" method="POST">
+		<legend>Language Details</legend>
+		
+		{{with $field := field "language.Name" .}}
+    		<div class="form-group {{$field.ErrorClass}}">
+    			<label for="{{$field.Name}}">Name</label> *
+    			<input type="text" class="form-control" id="{{$field.Name}}" name="{{$field.Name}}" size="16" value="{{$field.Flash}}"  placeholder="Enter language">
+    			<span class="error">{{$field.Error}}</span>
+    		</div>
+  		{{end}}
+		
+		{{with $field := field "language.Description" .}}
+    		<div class="form-group {{$field.ErrorClass}}">
+    			<label for="{{$field.Name}}">Description</label> *
+    			<input type="text" class="form-control" id="{{$field.Name}}" name="{{$field.Name}}" size="100" value="{{$field.Flash}}"  placeholder="Enter a Description">
+    			<span class="error">{{$field.Error}}</span>
+    		</div>
+  		{{end}}
+	  
+		{{with $field := field "language.IsActive" .}}
+	  <div class="checkbox">
+	    <label>
+	      <input type="checkbox" id="{{$field.Name}}"  name="{{$field.Name}}"> Active
+	    </label>
+	  </div>
+		{{end}}
+	  <button type="submit" class="btn btn-default">Submit</button>
+	</form>
+</div>
+
+
+{{template "footer.html" .}}

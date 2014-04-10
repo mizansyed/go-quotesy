@@ -16,6 +16,32 @@ func (_ tApp) Index(
 }
 
 
+type tGorpController struct {}
+var GorpController tGorpController
+
+
+func (_ tGorpController) Begin(
+		) string {
+	args := make(map[string]string)
+	
+	return revel.MainRouter.Reverse("GorpController.Begin", args).Url
+}
+
+func (_ tGorpController) Commit(
+		) string {
+	args := make(map[string]string)
+	
+	return revel.MainRouter.Reverse("GorpController.Commit", args).Url
+}
+
+func (_ tGorpController) Rollback(
+		) string {
+	args := make(map[string]string)
+	
+	return revel.MainRouter.Reverse("GorpController.Rollback", args).Url
+}
+
+
 type tStatic struct {}
 var Static tStatic
 
@@ -72,6 +98,34 @@ func (_ tTestRunner) List(
 	args := make(map[string]string)
 	
 	return revel.MainRouter.Reverse("TestRunner.List", args).Url
+}
+
+
+type tLanguage struct {}
+var Language tLanguage
+
+
+func (_ tLanguage) Index(
+		) string {
+	args := make(map[string]string)
+	
+	return revel.MainRouter.Reverse("Language.Index", args).Url
+}
+
+func (_ tLanguage) New(
+		) string {
+	args := make(map[string]string)
+	
+	return revel.MainRouter.Reverse("Language.New", args).Url
+}
+
+func (_ tLanguage) AddLanguage(
+		language interface{},
+		) string {
+	args := make(map[string]string)
+	
+	revel.Unbind(args, "language", language)
+	return revel.MainRouter.Reverse("Language.AddLanguage", args).Url
 }
 
 
