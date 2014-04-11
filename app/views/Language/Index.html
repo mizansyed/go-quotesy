@@ -17,4 +17,35 @@
   </div>
 </div>
 
+
+<p></p>
+
+<div class="container well">
+<table class="table">
+	<thead>
+		<tr>
+			<th>#</th>
+			<th>Name</th>
+			
+			<th>Active</th>
+			<th>Action</th>
+		</tr>
+	</thead>
+	<tbody>
+		{{range .languages}}
+		<tr>
+			<td>{{ .Id }}</td>
+			<td>{{ .Name }}
+				<span>{{ .Description }}</span>
+			</td>
+			<td>{{if .IsActive}} Yes {{else}} No {{end}} </td>
+			<td>
+			
+			</td>
+		</tr>
+		{{end}}
+	</tbody>
+</table>
+</div>
+
 {{template "footer.html" .}}

@@ -8,9 +8,20 @@ type Language struct {
 	GorpController
 }
 
-func (c Language) Index() revel.Result {
-	greeting := "Should show all the languages!"
-	return c.Render(greeting)
+func (c Language) Index(page int) revel.Result {
+	
+	var err error
+	
+	//var langs []models.Language
+	
+	languages, err := c.Txn.Select(models.Language{}, `select * from Language`)
+	
+	if err != nil {
+		panic(err)
+	}
+	
+	//greeting := "Should show all the languages!"
+	return c.Render(languages)
 }
 
 func (c Language) New() revel.Result {
