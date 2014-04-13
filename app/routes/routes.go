@@ -106,10 +106,30 @@ var Language tLanguage
 
 
 func (_ tLanguage) Index(
+		page int,
 		) string {
 	args := make(map[string]string)
 	
+	revel.Unbind(args, "page", page)
 	return revel.MainRouter.Reverse("Language.Index", args).Url
+}
+
+func (_ tLanguage) Edit(
+		id int,
+		) string {
+	args := make(map[string]string)
+	
+	revel.Unbind(args, "id", id)
+	return revel.MainRouter.Reverse("Language.Edit", args).Url
+}
+
+func (_ tLanguage) UpdateLanguage(
+		language interface{},
+		) string {
+	args := make(map[string]string)
+	
+	revel.Unbind(args, "language", language)
+	return revel.MainRouter.Reverse("Language.UpdateLanguage", args).Url
 }
 
 func (_ tLanguage) New(

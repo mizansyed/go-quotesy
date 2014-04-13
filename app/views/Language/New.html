@@ -4,11 +4,15 @@
 <header>
   <div class="container">
     <div class="row">
-        <h2>Add a Language</h2>       
+        <h2>
+		{{if eq .action "Edit"}} Edit Language {{else}} Add a Language {{end}}
+		</h2>       
     </div>
   </div>
 </header>
+
 <p></p>
+
 <div class="container">
   <div class="row">
     <div class="span6">
@@ -20,10 +24,16 @@
 
 
 <div class="container well">
-	<form role="form" action="/language/AddLanguage" method="POST">
+	<form role="form" action="/language/{{if eq .action `Edit`}}UpdateLanguage{{else}}AddLanguage{{end}}" method="POST">
 		<legend>Language Details</legend>
 		
+		{{with $field := field "language.Id" .}}
+			<input type="hidden" value="{{$field.Value}}" name="{{$field.Name}}" id="{{$field.Name}}" />
+		{{end}}
+		
+		
 		{{with $field := field "language.Name" .}}
+			
     		<div class="form-group {{$field.ErrorClass}}">
     			<label for="{{$field.Name}}">Name</label> *
     			<input type="text" class="form-control" id="{{$field.Name}}" name="{{$field.Name}}" size="16" value="{{$field.Flash}}"  placeholder="Enter language">
@@ -42,13 +52,12 @@
 		{{with $field := field "language.IsActive" .}}
 	  <div class="checkbox">
 	    <label>
-	      <input type="checkbox" id="{{$field.Name}}"  name="{{$field.Name}}"> Active
+	      <input type="checkbox" id="{{$field.Name}}"  name="{{$field.Name}}" {{if eq $field.Flash "true"}}checked{{end}}> Active
 	    </label>
 	  </div>
 		{{end}}
 	  <button type="submit" class="btn btn-default">Submit</button>
 	</form>
 </div>
-
 
 {{template "footer.html" .}}

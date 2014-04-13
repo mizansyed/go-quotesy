@@ -8,6 +8,16 @@ import (
 	"github.com/revel/revel"
 	"github.com/revel/revel/modules/db/app"
 	"github.com/muizsyed/go-quotesy/app/models"
+	_ "runtime"
+	_"io"
+	_"net/http"
+	_"os"
+	_"path/filepath"
+	_"reflect"
+	_"runtime"
+	_"strings"
+	_"time"
+	"bytes"
 )
 
 var (
@@ -27,6 +37,31 @@ func InitDB() {
 type GorpController struct {
 	*revel.Controller
 	Txn *gorp.Transaction
+}
+
+func (c *GorpController) GetCount(table string) int {
+	
+	
+	var buffer bytes.Buffer
+	
+	buffer.WriteString("select count(*) from ")
+	buffer.WriteString(table)
+	
+	fmt.Println(buffer.String())
+	
+	
+	count64, err := c.Txn.SelectInt(buffer.String())
+	
+	if err != nil {
+		panic(err)
+	}
+	
+	
+	fmt.Println("Converting count to int: languages")
+	// Do I have to do this?
+	count := int(count64)
+	
+	return count
 }
 
 func (c *GorpController) Begin() revel.Result {
@@ -59,3 +94,4 @@ func (c *GorpController) Rollback() revel.Result {
 	c.Txn = nil
 	return nil
 }
+

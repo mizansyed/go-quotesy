@@ -1,6 +1,14 @@
 package app
 
-import "github.com/revel/revel"
+import (
+	"fmt"
+	"math"
+	"github.com/revel/revel"
+	_"html"
+	"html/template"
+	"bytes"
+	//"reflect"
+)
 
 func init() {
 	// Filters is the default set of global filters.
@@ -19,6 +27,42 @@ func init() {
 		revel.ActionInvoker,           // Invoke the action.
 	}
 
+	/*revel.TemplateFuncs["field_val"] = func (f *revel.Field) template.HTML {
+		
+		var str string
+		
+		if f.FlashExists() {
+			str = f.Flash()
+		} else {
+			str = fmt.Sprintf("%v", f.Value())
+		}
+		
+		return template.HTML(str)
+	}*/
+
+	revel.TemplateFuncs["pager"] = func(val string, recordCount int, recordsPerPage int, pageIndex int) template.HTML {
+
+		var buffer bytes.Buffer
+			
+		pages := int(math.Ceil(float64(recordCount) / float64(recordsPerPage)))
+			
+		buffer.WriteString("<ul class='pagination'>")
+			
+		if pageIndex > 1 {
+			buffer.WriteString(fmt.Sprintf("<li><a href='/%s/%d'>&laquo;</a></li>", val, pageIndex - 1))
+		}
+			
+		for i := 1; i <= pages; i++ {
+			buffer.WriteString(fmt.Sprintf("<li><a href='/%s/%d'>%d</a></li>",val, i, i))
+		}
+			
+		if pageIndex <  pages {
+			buffer.WriteString(fmt.Sprintf("<li><a href='/%s/%d'>&raquo;</a></li>", val, pageIndex + 1))
+		}
+		buffer.WriteString("</ul>")
+		
+		return template.HTML(buffer.String())
+	}
 	// register startup functions with OnAppStart
 	// ( order dependent )
 	// revel.OnAppStart(InitDB())

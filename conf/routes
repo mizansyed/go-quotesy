@@ -5,7 +5,14 @@
 module:testrunner
 
 GET     /                                       App.Index
-GET	/language				Language.Index
+GET	/languages				Language.Index
+GET /languages/:page		Language.Index
+
+GET /:controller/new			:controller.New
+GET /:controller/:id			:controller.Show
+GET /:controller/:id/edit		:controller.Edit
+DELETE /:controller/:id			:controller.Delete
+
 
 # Ignore favicon requests
 GET     /favicon.ico                            404
