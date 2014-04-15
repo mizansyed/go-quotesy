@@ -19,10 +19,10 @@ func (c Language) Index(page int) revel.Result {
 
 	var err error
 
-	count := c.GetCount("language")
+	count := c.GetCount("Language")
 
 	offset := 10 * (page - 1)
-	languages, err := c.Txn.Select(models.Language{}, "select * from language order by language_id limit 10 offset ?", offset)
+	languages, err := c.Txn.Select(models.Language{}, "select * from Language order by language_id limit 10 offset ?", offset)
 
 	if err != nil {
 		panic(err)
@@ -35,7 +35,7 @@ func (c Language) Edit(id int) revel.Result {
 
 	var language models.Language
 
-	err := c.Txn.SelectOne(&language, "select * from language where language_id=?", id)
+	err := c.Txn.SelectOne(&language, "select * from Language where language_id=?", id)
 
 	if err != nil {
 		panic(err)
@@ -44,21 +44,14 @@ func (c Language) Edit(id int) revel.Result {
 	// Dont like the following - but need to set the values initially
 	language.SetFlashValues(&c.Flash)
 
-	//	c.Flash.Data["language.Name"] = language.Name
-	//	c.Flash.Data["language.Description"] = language.Description
-	//	c.Flash.Data["language.IsActive"] = fmt.Sprintf("%v", language.IsActive)
-
 	c.Session["language-version"] = strconv.Itoa(language.Version)
 
-	c.RenderArgs["action"] = "Edit"
-	c.RenderArgs["language"] = language
-	c.RenderArgs["id"] = id
-
-	return c.RenderTemplate(c.Name + "/New." + c.Request.Format)
-
+	return c.Render(language)
 }
 
 func (c Language) UpdateLanguage(language models.Language) revel.Result {
+
+	language.Validate(c.Validation)
 
 	var oldlanguage = c.Session["language-version"]
 
@@ -68,9 +61,12 @@ func (c Language) UpdateLanguage(language models.Language) revel.Result {
 	language.Updated = time.Now().UnixNano()
 
 	if c.Validation.HasErrors() {
-		c.Validation.Keep()
+
+		language.SetFlashValues(&c.Flash)
+		c.RenderArgs["language"] = language
+		//c.Validation.Keep()
 		c.FlashParams()
-		return c.RenderTemplate(c.Name + "/New." + c.Request.Format)
+		return c.RenderTemplate(c.Name + "/Edit." + c.Request.Format)
 	}
 
 	var err error
@@ -87,7 +83,10 @@ func (c Language) UpdateLanguage(language models.Language) revel.Result {
 }
 
 func (c Language) New() revel.Result {
-	return c.Render()
+
+	c.RenderArgs["action"] = "New"
+
+	return c.RenderTemplate(c.Name + "/Edit." + c.Request.Format)
 }
 
 func (c Language) AddLanguage(language models.Language) revel.Result {
@@ -95,9 +94,12 @@ func (c Language) AddLanguage(language models.Language) revel.Result {
 	language.Validate(c.Validation)
 
 	if c.Validation.HasErrors() {
-		c.Validation.Keep()
+
+		c.RenderArgs["action"] = "New"
+		//c.Validation.Keep()
 		c.FlashParams()
-		return c.RenderTemplate(c.Name + "/New." + c.Request.Format)
+
+		return c.RenderTemplate(c.Name + "/Edit." + c.Request.Format)
 	}
 
 	language.Created = time.Now().UnixNano()
@@ -119,13 +121,13 @@ func (c Language) Delete(id int) revel.Result {
 
 	var language models.Language
 
-	err := c.Txn.SelectOne(&language, "select * from language where language_id=?", id)
+	err := c.Txn.SelectOne(&language, "select * from Language where language_id=?", id)
 
 	if err != nil {
 		panic(err)
 	}
 
-	c.Txn.Delete(&language)
+	_, err = c.Txn.Delete(&language)
 
 	if err != nil {
 		panic(err)

@@ -5,7 +5,7 @@
   <div class="container">
     <div class="row">
         <h2>
-		{{if eq .action "Edit"}} Edit Language {{else}} Add a Language {{end}}
+		{{if eq .action "New"}} Add a Language {{else}} Edit Language {{end}}
 		</h2>       
     </div>
   </div>
@@ -24,7 +24,7 @@
 
 
 <div class="container well">
-	<form role="form" action="/language/{{if eq .action `Edit`}}UpdateLanguage{{else}}AddLanguage{{end}}" method="POST">
+	<form role="form" action="/language/{{if eq .action `New`}}AddLanguage{{else}}UpdateLanguage{{end}}" method="POST">
 		<legend>Language Details</legend>
 		
 		{{with $field := field "language.Id" .}}

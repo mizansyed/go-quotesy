@@ -1,6 +1,6 @@
 
 -- +goose Up
-CREATE TABLE language (
+CREATE TABLE Language (
     language_id int NOT NULL AUTO_INCREMENT,
     name text,
     description text,
@@ -13,5 +13,5 @@ CREATE TABLE language (
 
 
 -- +goose Down
-DROP TABLE language;
+DROP TABLE Language;
 
