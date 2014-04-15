@@ -37,7 +37,7 @@
     		<div class="form-group {{$field.ErrorClass}}">
     			<label for="{{$field.Name}}">Name</label> *
     			<input type="text" class="form-control" id="{{$field.Name}}" name="{{$field.Name}}" size="16" value="{{$field.Flash}}"  placeholder="Enter language">
-    			<span class="error">{{$field.Error}}</span>
+    			{{ display_error $field }}
     		</div>
   		{{end}}
 		
@@ -45,7 +45,7 @@
     		<div class="form-group {{$field.ErrorClass}}">
     			<label for="{{$field.Name}}">Description</label> *
     			<input type="text" class="form-control" id="{{$field.Name}}" name="{{$field.Name}}" size="100" value="{{$field.Flash}}"  placeholder="Enter a Description">
-    			<span class="error">{{$field.Error}}</span>
+    			{{ display_error $field }}
     		</div>
   		{{end}}
 	  

@@ -3,6 +3,6 @@ test:
     open: quotesy.sqlite3
 
 development:
-    driver: sqlite3
-    open: quotesy.sqlite3
+    driver: mymysql
+    open: unix://var/run/mysqld/mysqld.sock*quotesy/username/password
 

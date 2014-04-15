@@ -1,10 +1,14 @@
 
 -- +goose Up
 CREATE TABLE language (
-    language_id integer primary key not null,
+    language_id int NOT NULL AUTO_INCREMENT,
     name text,
     description text,
-	is_active int
+	is_active int,
+	created int,
+	updated int,
+	version int,
+	PRIMARY KEY(language_id)
 );
 
 

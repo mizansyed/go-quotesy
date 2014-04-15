@@ -1,0 +1,27 @@
+<script type="text/javascript">
+$(function() {
+    $(document).on('click', 'a[data-method]', function () {
+		
+		var method = $(this).attr('data-method');
+		var url = $(this).attr('href');
+		var message = $(this).attr('data-confirm');
+		
+		if (confirm(message))
+		{
+	    		$.ajax({
+				url: url,
+				type: method,
+				success: function(data) {
+					location.reload(true);
+				},
+			    error: function(XMLHttpRequest, textStatus, errorThrown) { 
+	    			    alert("Status: " + textStatus); alert("Error: " + errorThrown); 
+	    			} 
+			});
+		}
+			
+		
+		return false;
+	});
+});
+</script>

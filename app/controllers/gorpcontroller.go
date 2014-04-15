@@ -1,23 +1,24 @@
 package controllers
 
 import (
-	"fmt"
+	"bytes"
 	"database/sql"
+	"fmt"
 	"github.com/coopernurse/gorp"
-	 _ "github.com/mattn/go-sqlite3"
+	_ "github.com/mattn/go-sqlite3"
+	"github.com/muizsyed/go-quotesy/app/models"
 	"github.com/revel/revel"
 	"github.com/revel/revel/modules/db/app"
-	"github.com/muizsyed/go-quotesy/app/models"
+	// "github.com/ziutek/mymysql"
+	_ "io"
+	"log"
+	_ "net/http"
+	"os"
+	_ "path/filepath"
+	_ "reflect"
 	_ "runtime"
-	_"io"
-	_"net/http"
-	_"os"
-	_"path/filepath"
-	_"reflect"
-	_"runtime"
-	_"strings"
-	_"time"
-	"bytes"
+	_ "strings"
+	_ "time"
 )
 
 var (
@@ -26,12 +27,17 @@ var (
 
 func InitDB() {
 	db.Init()
-	Dbm = &gorp.DbMap{Db: db.Db, Dialect: gorp.SqliteDialect{}}
-	//Dbm.TraceOn("", log.New(os.Stdout, "gorptest: ", log.Lmicroseconds))
-	Dbm.AddTableWithName(models.Language{}, "language").SetKeys(true, "Id")
-	
+
+	Dbm = &gorp.DbMap{Db: db.Db, Dialect: gorp.MySQLDialect{"InnoDB", "UTF8"}}
+
+	// Enable trace - perhaps should make this configurable
+	Dbm.TraceOn("[gorp]", log.New(os.Stdout, "Quotesy:", log.Lmicroseconds))
+
+	// Add tables to DB Map
+	Dbm.AddTableWithName(models.Language{}, "language").SetKeys(true, "Id").SetVersionCol("Version")
+
 	fmt.Println("Create tables")
-	
+
 }
 
 type GorpController struct {
@@ -40,27 +46,24 @@ type GorpController struct {
 }
 
 func (c *GorpController) GetCount(table string) int {
-	
-	
+
 	var buffer bytes.Buffer
-	
+
 	buffer.WriteString("select count(*) from ")
 	buffer.WriteString(table)
-	
+
 	fmt.Println(buffer.String())
-	
-	
+
 	count64, err := c.Txn.SelectInt(buffer.String())
-	
+
 	if err != nil {
 		panic(err)
 	}
-	
-	
+
 	fmt.Println("Converting count to int: languages")
 	// Do I have to do this?
 	count := int(count64)
-	
+
 	return count
 }
 
@@ -94,4 +97,3 @@ func (c *GorpController) Rollback() revel.Result {
 	c.Txn = nil
 	return nil
 }
-

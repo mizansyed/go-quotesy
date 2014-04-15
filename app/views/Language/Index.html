@@ -1,5 +1,7 @@
 {{set . "title" "Language"}}
 {{template "header.html" .}}
+{{template "confirm.html" .}}
+
 
 <header>
   <div class="container">
@@ -21,6 +23,11 @@
 <p></p>
 
 <div class="container well">
+	<div class="text-right">
+		<a href="{{url `language.New` }}" class="btn btn-default">
+		Add
+		</a>
+	</div>
 <table class="table">
 	<thead>
 		<tr>
@@ -41,7 +48,7 @@
 			<td>{{if .IsActive}} Yes {{else}} No {{end}} </td>
 			<td>
 				<a href="{{url `language.Edit` .Id}}">Edit</a> | 
-				<a href="">Delete</a>
+				<a href="{{url `language.Delete` .Id}}" data-confirm="Are you sure you wish to delete the Language title '{{ .Name }}'?" data-method="delete">Delete</a>
 			</td>
 		</tr>
 		{{end}}
