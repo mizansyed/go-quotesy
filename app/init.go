@@ -2,15 +2,41 @@ package app
 
 import (
 	"bytes"
+	"database/sql"
 	"fmt"
 	"github.com/revel/revel"
 	_ "html"
 	"html/template"
 	"math"
-	//"reflect"
+	"reflect"
+	"strconv"
 )
 
+var NullInt64Binder = revel.Binder{
+	Bind: func(params *revel.Params, name string, typ reflect.Type) reflect.Value {
+		vals, ok := params.Values[name]
+		if !ok || len(vals) == 0 {
+			return reflect.Zero(typ)
+		}
+
+		intValue, err := strconv.ParseInt(vals[0], 10, 64)
+		if err != nil {
+			fmt.Println(err)
+			return reflect.Zero(typ)
+		}
+		pValue := reflect.New(typ)
+
+		// Set the NullInt64 type
+		pValue.Elem().Set(reflect.ValueOf(sql.NullInt64{intValue, true}))
+		return pValue.Elem()
+	},
+	Unbind: func(output map[string]string, key string, val interface{}) {
+		output[key] = fmt.Sprintf("%d", val)
+	},
+}
+
 func init() {
+	revel.TypeBinders[reflect.TypeOf(sql.NullInt64{})] = NullInt64Binder
 	// Filters is the default set of global filters.
 	revel.Filters = []revel.Filter{
 		revel.PanicFilter,             // Recover from panics and display an error page instead.
@@ -74,6 +100,7 @@ func init() {
 
 		return template.HTML(buffer.String())
 	}
+
 	// register startup functions with OnAppStart
 	// ( order dependent )
 	// revel.OnAppStart(InitDB())

@@ -4,9 +4,11 @@
 
 module:testrunner
 
-GET     /                                       App.Index
+GET /                                       App.Index
 GET	/languages				Language.Index
 GET /languages/:page		Language.Index
+GET /categories			Category.Index
+GET /categories/:page	Category.Index
 
 GET /:controller/new			:controller.New
 GET /:controller/:id			:controller.Show

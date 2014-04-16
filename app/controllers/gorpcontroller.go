@@ -34,7 +34,8 @@ func InitDB() {
 	Dbm.TraceOn("[gorp]", log.New(os.Stdout, "Quotesy:", log.Lmicroseconds))
 
 	// Add tables to DB Map
-	Dbm.AddTableWithName(models.Language{}, "language").SetKeys(true, "Id").SetVersionCol("Version")
+	Dbm.AddTableWithName(models.Language{}, "Language").SetKeys(true, "Id").SetVersionCol("Version")
+	Dbm.AddTableWithName(models.Category{}, "Category").SetKeys(true, "Id").SetVersionCol("Version")
 
 	fmt.Println("Create tables")
 

@@ -1,0 +1,63 @@
+{{set . "title" "Category"}}
+{{template "header.html" .}}
+{{template "confirm.html" .}}
+
+
+<header>
+  <div class="container">
+    <div class="row">
+        <h2>All Categories</h2>      
+    </div>
+  </div>
+</header>
+
+<div class="container">
+  <div class="row">
+    <div class="span6">
+      {{template "flash.html" .}}
+    </div>
+  </div>
+</div>
+
+
+<p></p>
+
+<div class="container well">
+	<div class="text-right">
+		<a href="{{url `category.New` }}" class="btn btn-default">
+		Add
+		</a>
+	</div>
+<table class="table">
+	<thead>
+		<tr>
+			<th>#</th>
+			<th>Name</th>
+			
+			<th>Active</th>
+			<th>Action</th>
+		</tr>
+	</thead>
+	<tbody>
+		{{range .categories}}
+		<tr>
+			<td>{{ .Id }}</td>
+			<td>{{ .Name }}
+			</td>
+			<td>{{if .IsActive}} Yes {{else}} No {{end}} </td>
+			<td>
+				<a href="{{url `category.Edit` .Id}}">Edit</a> | 
+				<a href="{{url `language.Delete` .Id}}" data-confirm="Are you sure you wish to delete the Language title '{{ .Name }}'?" data-method="delete">Delete</a>
+			</td>
+		</tr>
+		{{end}}
+	</tbody>
+</table>
+
+{{pager "languages" .count 10 .page }}
+
+</div>
+
+
+
+{{template "footer.html" .}}

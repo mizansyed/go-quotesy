@@ -1,11 +1,11 @@
-{{set . "title" "Language"}}
+{{set . "title" "Category"}}
 {{template "header.html" .}}
 
 <header>
   <div class="container">
     <div class="row">
         <h2>
-		{{if eq .action "New"}} Add a Language {{else}} Edit Language {{end}}
+		{{if eq .action "New"}} Add a Category {{else}} Edit Category {{end}}
 		</h2>       
     </div>
   </div>
@@ -24,15 +24,15 @@
 
 
 <div class="container well">
-	<form role="form" action="/language/{{if eq .action `New`}}AddLanguage{{else}}UpdateLanguage{{end}}" method="POST">
-		<legend>Language Details</legend>
+	<form role="form" action="/category/{{if eq .action `New`}}Add{{else}}Update{{end}}" method="POST">
+		<legend>Category Details</legend>
 		
-		{{with $field := field "language.Id" .}}
+		{{with $field := field "category.Id" .}}
 			<input type="hidden" value="{{$field.Value}}" name="{{$field.Name}}" id="{{$field.Name}}" />
 		{{end}}
 		
 		
-		{{with $field := field "language.Name" .}}
+		{{with $field := field "category.Name" .}}
 			
     		<div class="form-group {{$field.ErrorClass}}">
     			<label for="{{$field.Name}}">Name</label> *
@@ -41,18 +41,28 @@
     		</div>
   		{{end}}
 		
-		{{with $field := field "language.Description" .}}
+		
+		
+		{{with $field := field "category.ParentId" .}}
     		<div class="form-group {{$field.ErrorClass}}">
-    			<label for="{{$field.Name}}">Description</label> *
-    			<input type="text" class="form-control" id="{{$field.Name}}" name="{{$field.Name}}" size="100" value="{{$field.Flash}}"  placeholder="Enter a Description">
+    			<label for="{{$field.Name}}">Parent Category</label>
+
+			<div>
+			<select id="{{$field.Name}}" name="{{$field.Name}}">
+				 {{ option $field "" "No Parent"}}
+				 {{ range $.categories }}
+					{{ option $field .IdStr .Name}}
+	      		 {{ end }}
+    			</select>
     			{{ display_error $field }}
+			</div>
     		</div>
   		{{end}}
 	  
-		{{with $field := field "language.IsActive" .}}
+		{{with $field := field "category.IsActive" .}}
 	  <div class="checkbox">
 	    <label>
-			<input type="checkbox" id="{{$field.Name}}"  name="{{$field.Name}}" {{if eq $field.Flash "true"}}checked{{end}}> Active
+			{{ checkbox $field "true" }} Active
 	    </label>
 	  </div>
 		{{end}}
