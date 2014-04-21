@@ -4,13 +4,10 @@ CREATE TABLE Tag (
 	tag_id int NOT NULL AUTO_INCREMENT,
     name varchar(100),
 	slug varchar(100) ,
-	count int,
+	count int NOT NULL,
 	PRIMARY KEY(tag_id, slug),
 	CONSTRAINT uc_Slug UNIQUE (slug)
 );
 
 -- +goose Down
--- +goose StatementBegin
-
 DROP TABLE Tag;
--- +goose StatementEnd

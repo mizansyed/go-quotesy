@@ -1,6 +1,6 @@
 package models
 
-import _"database/sql"
+import "database/sql"
 
 type Quote struct {
 	Id       	int     		`db:"quote_id"`
@@ -16,7 +16,7 @@ type Quote struct {
 type QuoteVM struct {
 	
 	Quote Quote
-	CategoryId int
+	CategoryId sql.NullInt64
 	Tags []string
 }
 
