@@ -9,6 +9,7 @@ type Category struct {
 	Id       int           `db:"category_id"`
 	ParentId sql.NullInt64 `db:"parent_id"`
 	Name     string        `db:"name"`
+	Count    int			`db:"count"`
 	IsActive bool          `db:"is_active"`
 	Created  int64         `db:"created"`
 	Updated  int64         `db:"updated"`

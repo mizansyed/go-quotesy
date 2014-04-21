@@ -6,3 +6,4 @@ type Model interface {
 	SetFlashValues(c *revel.Flash)
 	Validate(v *revel.Validation)
 }
+

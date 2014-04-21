@@ -1,0 +1,179 @@
+{{set . "title" "Category"}}
+{{template "header.html" .}}
+
+<header>
+  <div class="container">
+    <div class="row">
+        <h2>
+		{{if eq .action "New"}} Add a Quote {{else}} Edit Quote {{end}}
+		</h2>       
+    </div>
+  </div>
+</header>
+
+<p></p>
+
+<div class="container">
+  <div class="row">
+    <div class="span6">
+      {{template "flash.html" .}}
+    </div>
+  </div>
+</div>
+
+
+<div class="container well">
+	<form role="form" action="/quote/{{if eq .action `New`}}Add{{else}}Update{{end}}" method="POST">
+		<legend>Quote Details</legend>
+		
+		{{with $field := field "quote.Quote.Id" .}}
+			<input type="hidden" value="{{$field.Value}}" name="{{$field.Name}}" id="{{$field.Name}}" />
+		{{end}}
+		
+		
+		{{with $field := field "quote.Quote.Content" .}}
+			<div class="form-group {{$field.ErrorClass}}">
+    			<label for="{{$field.Name}}">Quote</label> *
+    			<input type="text" class="form-control" id="{{$field.Name}}" name="{{$field.Name}}" size="16" value="{{$field.Flash}}"  placeholder="Quote" />
+    			{{ display_error $field }}
+    		</div>
+			
+		{{end}}
+		
+		{{with $field := field "quote.Quote.Description" .}}
+			<div class="form-group {{$field.ErrorClass}}">
+    			<label for="{{$field.Name}}">Comments</label>
+    			<textarea type="text" class="form-control" id="{{$field.Name}}" name="{{$field.Name}}" size="16" value="{{$field.Flash}}"  placeholder="Description"></textarea>
+    			{{ display_error $field }}
+    		</div>
+		{{end}}
+		
+		{{with $field := field "quote.Quote.LanguageId" .}}
+			<div class="form-group {{$field.ErrorClass}}">
+    			<label for="{{$field.Name}}">Language</label>
+				<div>
+    				<select id="{{$field.Name}}" name="{{$field.Name}}">
+					{{ range $.languages }}
+					{{ option $field .IdStr .Name}}
+					{{ end }}
+					</select>
+				</div>
+    			{{ display_error $field }}
+    		</div>
+		{{end}}
+		
+		{{with $field := field "quote.CategoryId" .}}
+		
+			
+		
+    		<div class="form-group {{$field.ErrorClass}}">
+    			<label for="{{$field.Name}}">Category</label>
+
+				<div>
+					<input type="hidden" value="{{$field.Flash}}" name="{{$field.Name}}" id="category_parent_id" />
+				</div>
+				<div id="scrollable-dropdown-menu">
+					<input type="text" name="typeahead_category" class="typeahead form-control" id="typeahead" value="{{ $.parentcategory }}"/>
+				</div>
+				
+				<script type="text/javascript">
+		
+$(function() {
+					$("#typeahead").on("typeahead:selected typeahead:autocompleted", function(e,datum) { $("#category_parent_id").val(datum.Value); });
+				
+					$('#typeahead').typeahead(null,{
+
+						name: 'eerr',
+						displayKey: 'Data',
+					  	source: function(query, cb)
+						{
+					
+							$.ajax({
+					
+								url: '/category/filter?name=' + query + "&omit={{$.category.Id}}",
+					      		type: 'GET',
+							    dataType: 'JSON',
+					      		async: true,
+					      		success: function(data){
+									cb(data);
+					         	},
+								error: function(XMLHttpRequest, textStatus, errorThrown) { 
+									alert("Status: " + textStatus); alert("Error: " + errorThrown); 
+								}    
+					
+					        })
+					  	}
+					
+					});
+					
+					$('#typeahead').on("keyup", function() {$("#category_parent_id").val(''); });
+					
+					
+					});
+				</script>
+			
+    			{{ display_error $field }}
+			
+    		</div>
+  		{{end}}
+		
+		{{with $field := field "quote.Tags" .}}
+		
+			<label for="{{$field.Name}}">Tags</label>
+		
+			<div class="">
+			<select multiple id="quote_tags" name="{{$field.Name}}[]">
+			</select>
+			<script>
+			
+				$(function() {
+					
+					
+					
+					$('#quote_tags').tagsinput({
+				
+					});
+					
+					$('#quote_tags').tagsinput('input').typeahead(null,{
+						
+						name: 'quote_tags',
+						displayKey: 'Data',
+						source: function(query, cb)
+						{
+					
+							$.ajax({
+					
+								url: '/tag/filter?name=' + query,
+					      		type: 'GET',
+							    dataType: 'JSON',
+					      		async: true,
+					      		success: function(data){
+									cb(data);
+					         	},
+								error: function(XMLHttpRequest, textStatus, errorThrown) { 
+									alert("Error: " + errorThrown); 
+								}    
+					
+					        })
+					  	}
+
+					
+					}).bind('typeahead:selected typeahead:autocompleted', $.proxy(function (obj, datum) {  
+					
+  						$('#quote_tags').tagsinput('add', datum.Data);					
+						$('#quote_tags').tagsinput('input').typeahead('val', '');
+					}, $('#quote_tags')));
+
+				});
+			 
+
+			</script>
+			</div>
+		{{end}}
+			
+			
+		<button type="submit" id="Click" class="btn btn-default">Submit</button>
+		
+		
+	</form>
+</div>

@@ -44,20 +44,59 @@
 		
 		
 		{{with $field := field "category.ParentId" .}}
+		
+			
+		
     		<div class="form-group {{$field.ErrorClass}}">
     			<label for="{{$field.Name}}">Parent Category</label>
 
-			<div>
-			<select id="{{$field.Name}}" name="{{$field.Name}}">
-				 {{ option $field "" "No Parent"}}
-				 {{ range $.categories }}
-					{{ option $field .IdStr .Name}}
-	      		 {{ end }}
-    			</select>
+				<div>
+					<input type="hidden" value="{{$field.Flash}}" name="{{$field.Name}}" id="category_parent_id" />
+				</div>
+				<div id="scrollable-dropdown-menu">
+					<input type="text" name="typeahead_category" class="typeahead form-control" id="typeahead" value="{{ $.parentcategory }}"/>
+				</div>
+				
+				<script type="text/javascript">
+		
+					$("#typeahead").on("typeahead:selected typeahead:autocompleted", function(e,datum) { $("#category_parent_id").val(datum.Value); });
+					
+					$('#typeahead').typeahead(null,{
+
+						name: 'eerr',
+						displayKey: 'Data',
+					  	source: function(query, cb)
+						{
+					
+							$.ajax({
+					
+								url: '/category/filter?name=' + query + "&omit={{$.category.Id}}",
+					      		type: 'GET',
+							    dataType: 'JSON',
+					      		async: true,
+					      		success: function(data){
+									cb(data);
+					         	},
+								error: function(XMLHttpRequest, textStatus, errorThrown) { 
+									alert("Status: " + textStatus); alert("Error: " + errorThrown); 
+								}    
+					
+					        })
+					  	}
+					
+					});
+					
+					$('#typeahead').on("keyup", function() {$("#category_parent_id").val(''); });
+				</script>
+			
     			{{ display_error $field }}
-			</div>
+			
     		</div>
   		{{end}}
+		
+		{{with $field := field "category.Tags" .}}
+		
+		{{end}}
 	  
 		{{with $field := field "category.IsActive" .}}
 	  <div class="checkbox">
@@ -68,6 +107,9 @@
 		{{end}}
 	  <button type="submit" class="btn btn-default">Submit</button>
 	</form>
+	
+
+		
 </div>
 
 {{template "footer.html" .}}

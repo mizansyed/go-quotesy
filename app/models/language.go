@@ -3,6 +3,7 @@ package models
 import "github.com/revel/revel"
 import _ "time"
 import "fmt"
+import "strconv"
 
 type Language struct {
 	Id          int    `db:"language_id"`
@@ -12,6 +13,10 @@ type Language struct {
 	Created     int64  `db:"created"`
 	Updated     int64  `db:"updated"`
 	Version     int    `db:"version"`
+}
+
+func (language Language) IdStr() string {
+	return strconv.Itoa(language.Id)
 }
 
 func (language Language) SetFlashValues(c *revel.Flash) {

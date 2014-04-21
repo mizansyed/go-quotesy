@@ -65,6 +65,8 @@ func init() {
 
 		return template.HTML(str)
 	}*/
+	
+	
 
 	revel.TemplateFuncs["display_error"] = func(f *revel.Field) template.HTML {
 

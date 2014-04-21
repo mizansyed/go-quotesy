@@ -21,7 +21,56 @@
 .error
 {	
 	padding: 10px;	
-    color: #b10000;
+    color: white;
 	border: 1px solid black;
-	background-color: grey;
+	background-color: #b10000;
+}
+
+
+
+
+
+
+.typeahead {
+  background-color: #fff;
+}
+
+
+
+.tt-hint {
+  color: #999
+}
+
+.tt-dropdown-menu {
+  width: 422px;
+
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+
+}
+
+.tt-suggestion {
+  padding: 3px 20px;
+  font-size: 18px;
+  line-height: 24px;
+}
+
+.tt-suggestion.tt-cursor {
+  color: #fff;
+  background-color: #0097cf;
+
+}
+
+.tt-suggestion p {
+  margin: 0;
+}
+
+.gist {
+  font-size: 14px;
+}
+
+#scrollable-dropdown-menu .tt-dropdown-menu {
+max-height: 150px;
+overflow-y: auto;
 }

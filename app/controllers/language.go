@@ -64,7 +64,6 @@ func (c Language) UpdateLanguage(language models.Language) revel.Result {
 
 		language.SetFlashValues(&c.Flash)
 		c.RenderArgs["language"] = language
-		//c.Validation.Keep()
 		c.FlashParams()
 		return c.RenderTemplate(c.Name + "/Edit." + c.Request.Format)
 	}
@@ -96,7 +95,6 @@ func (c Language) AddLanguage(language models.Language) revel.Result {
 	if c.Validation.HasErrors() {
 
 		c.RenderArgs["action"] = "New"
-		//c.Validation.Keep()
 		c.FlashParams()
 
 		return c.RenderTemplate(c.Name + "/Edit." + c.Request.Format)

@@ -36,6 +36,10 @@ func InitDB() {
 	// Add tables to DB Map
 	Dbm.AddTableWithName(models.Language{}, "Language").SetKeys(true, "Id").SetVersionCol("Version")
 	Dbm.AddTableWithName(models.Category{}, "Category").SetKeys(true, "Id").SetVersionCol("Version")
+	Dbm.AddTableWithName(models.Tag{}, "Tag").SetKeys(true, "Slug")
+	Dbm.AddTableWithName(models.Quote{}, "Quote").SetKeys(true, "Id").SetVersionCol("Version")
+	Dbm.AddTableWithName(models.QuoteTag{}, "QuoteTag").SetKeys(true, "Id")
+	Dbm.AddTableWithName(models.QuoteCategory{}, "QuoteCategory").SetKeys(true, "Id")
 
 	fmt.Println("Create tables")
 

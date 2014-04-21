@@ -4,18 +4,6 @@ package routes
 import "github.com/revel/revel"
 
 
-type tApp struct {}
-var App tApp
-
-
-func (_ tApp) Index(
-		) string {
-	args := make(map[string]string)
-	
-	return revel.MainRouter.Reverse("App.Index", args).Url
-}
-
-
 type tGorpController struct {}
 var GorpController tGorpController
 
@@ -114,6 +102,17 @@ func (_ tCategory) Index(
 	return revel.MainRouter.Reverse("Category.Index", args).Url
 }
 
+func (_ tCategory) Filter(
+		name string,
+		omit int,
+		) string {
+	args := make(map[string]string)
+	
+	revel.Unbind(args, "name", name)
+	revel.Unbind(args, "omit", omit)
+	return revel.MainRouter.Reverse("Category.Filter", args).Url
+}
+
 func (_ tCategory) New(
 		) string {
 	args := make(map[string]string)
@@ -146,6 +145,62 @@ func (_ tCategory) Update(
 	
 	revel.Unbind(args, "category", category)
 	return revel.MainRouter.Reverse("Category.Update", args).Url
+}
+
+func (_ tCategory) Delete(
+		id int,
+		) string {
+	args := make(map[string]string)
+	
+	revel.Unbind(args, "id", id)
+	return revel.MainRouter.Reverse("Category.Delete", args).Url
+}
+
+
+type tApp struct {}
+var App tApp
+
+
+func (_ tApp) Index(
+		) string {
+	args := make(map[string]string)
+	
+	return revel.MainRouter.Reverse("App.Index", args).Url
+}
+
+
+type tTag struct {}
+var Tag tTag
+
+
+func (_ tTag) Filter(
+		name string,
+		) string {
+	args := make(map[string]string)
+	
+	revel.Unbind(args, "name", name)
+	return revel.MainRouter.Reverse("Tag.Filter", args).Url
+}
+
+
+type tQuote struct {}
+var Quote tQuote
+
+
+func (_ tQuote) New(
+		) string {
+	args := make(map[string]string)
+	
+	return revel.MainRouter.Reverse("Quote.New", args).Url
+}
+
+func (_ tQuote) Add(
+		quote interface{},
+		) string {
+	args := make(map[string]string)
+	
+	revel.Unbind(args, "quote", quote)
+	return revel.MainRouter.Reverse("Quote.Add", args).Url
 }
 
 
